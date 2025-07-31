@@ -25,7 +25,7 @@ export async function checkWritePermissions(
       );
       if (isAllowed) {
         core.info(
-          `Actor ${actor} is in the allowed actors list, bypassing permission check`,
+          `Actor ${actor} is in the allowed actors list, bypassing repository permission check`,
         );
         return true;
       }

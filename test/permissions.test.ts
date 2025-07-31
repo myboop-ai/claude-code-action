@@ -177,7 +177,7 @@ describe("checkWritePermissions", () => {
 
     expect(result).toBe(true);
     expect(coreInfoSpy).toHaveBeenCalledWith(
-      "Actor test-user is in the allowed actors list, bypassing permission check",
+      "Actor test-user is in the allowed actors list, bypassing repository permission check",
     );
   });
 
