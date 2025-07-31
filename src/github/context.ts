@@ -68,6 +68,7 @@ type BaseContext = {
     assigneeTrigger: string;
     labelTrigger: string;
     allowedTools: string[];
+    allowedActors: string[];
     disallowedTools: string[];
     customInstructions: string;
     directPrompt: string;
@@ -125,6 +126,7 @@ export function parseGitHubContext(): GitHubContext {
       assigneeTrigger: process.env.ASSIGNEE_TRIGGER ?? "",
       labelTrigger: process.env.LABEL_TRIGGER ?? "",
       allowedTools: parseMultilineInput(process.env.ALLOWED_TOOLS ?? ""),
+      allowedActors: parseMultilineInput(process.env.ALLOWED_ACTORS ?? ""),
       disallowedTools: parseMultilineInput(process.env.DISALLOWED_TOOLS ?? ""),
       customInstructions: process.env.CUSTOM_INSTRUCTIONS ?? "",
       directPrompt: process.env.DIRECT_PROMPT ?? "",

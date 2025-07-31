@@ -195,6 +195,7 @@ jobs:
 | `claude_env`                   | Custom environment variables to pass to Claude Code execution (YAML format)                                            | No       | ""        |
 | `settings`                     | Claude Code settings as JSON string or path to settings JSON file                                                      | No       | ""        |
 | `additional_permissions`       | Additional permissions to enable. Currently supports 'actions: read' for viewing workflow results                      | No       | ""        |
+| `allowed_actors`               | Additional actors allowed to trigger the action regardless of repository permissions (comma-separated)                 | No       | ""        |
 | `experimental_allowed_domains` | Restrict network access to these domains only (newline-separated).                                                     | No       | ""        |
 | `use_commit_signing`           | Enable commit signing using GitHub's commit signature verification. When false, Claude uses standard git commands      | No       | `false`   |
 
@@ -875,6 +876,25 @@ Both AWS Bedrock and GCP Vertex AI require OIDC authentication.
 - **Token Permissions**: The GitHub app receives only a short-lived token scoped specifically to the repository it's operating in
 - **No Cross-Repository Access**: Each action invocation is limited to the repository where it was triggered
 - **Limited Scope**: The token cannot access other repositories or perform actions beyond the configured permissions
+
+### Allowed Actors
+
+The `allowed_actors` input allows specific GitHub users or bots to trigger the action even without write permissions to the repository. This is useful for:
+
+- Automated tools like `copilot-pull-request-reviewer`
+- Team members who should be able to request Claude's help without full repository access
+- Trusted bots like Dependabot
+
+**Security Note**: This feature bypasses GitHub's standard permission model. Only add actors you trust, as they will be able to trigger Claude to make changes to your repository.
+
+```yaml
+- uses: anthropics/claude-code-action@v1
+  with:
+    allowed_actors: |
+      copilot-pull-request-reviewer
+      dependabot[bot]
+      trusted-team-member
+```
 
 ### GitHub App Permissions
 
