@@ -12,6 +12,17 @@ export async function checkHumanActor(
   octokit: Octokit,
   githubContext: ParsedGitHubContext,
 ) {
+  // Check if actor is in the allowed actors list
+  if (githubContext.inputs.allowedActors && githubContext.inputs.allowedActors.length > 0) {
+    const isAllowed = githubContext.inputs.allowedActors.some(
+      (allowedActor) => allowedActor.toLowerCase() === githubContext.actor.toLowerCase()
+    );
+    if (isAllowed) {
+      console.log(`Actor ${githubContext.actor} is in the allowed actors list, bypassing human check`);
+      return;
+    }
+  }
+
   // Fetch user information from GitHub API
   const { data: userData } = await octokit.users.getByUsername({
     username: githubContext.actor,

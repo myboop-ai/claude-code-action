@@ -879,13 +879,13 @@ Both AWS Bedrock and GCP Vertex AI require OIDC authentication.
 
 ### Allowed Actors
 
-The `allowed_actors` input allows specific GitHub users or bots to trigger the action even without write permissions to the repository. This is useful for:
+The `allowed_actors` input allows specific GitHub users or bots to trigger the action even without write permissions to the repository and bypasses human actor checks. This is useful for:
 
 - Automated tools like `copilot-pull-request-reviewer`
 - Team members who should be able to request Claude's help without full repository access
 - Trusted bots like Dependabot
 
-**Security Note**: This feature bypasses GitHub's standard permission model. Only add actors you trust, as they will be able to trigger Claude to make changes to your repository.
+**Security Note**: This feature bypasses both GitHub's standard permission model and human actor validation. Only add actors you trust, as they will be able to trigger Claude to make changes to your repository.
 
 ```yaml
 - uses: anthropics/claude-code-action@v1
