@@ -66,6 +66,13 @@ inputs:
     description: "Additional permissions to enable. Currently supports 'actions: read' for viewing workflow results"
     required: false
     default: ""
+  allowed_actors:
+    description: |
+      Additional actors allowed to trigger the action regardless of repository permissions.
+      This bypasses the standard GitHub permission model - use with trusted actors only.
+      Accepts comma-separated or newline-separated values.
+    required: false
+    default: ""
   claude_env:
     description: "Custom environment variables to pass to Claude Code execution (YAML format)"
     required: false
@@ -151,6 +158,7 @@ runs:
         BRANCH_PREFIX: ${{ inputs.branch_prefix }}
         ALLOWED_TOOLS: ${{ inputs.allowed_tools }}
         DISALLOWED_TOOLS: ${{ inputs.disallowed_tools }}
+        ALLOWED_ACTORS: ${{ inputs.allowed_actors }}
         CUSTOM_INSTRUCTIONS: ${{ inputs.custom_instructions }}
         DIRECT_PROMPT: ${{ inputs.direct_prompt }}
         OVERRIDE_PROMPT: ${{ inputs.override_prompt }}

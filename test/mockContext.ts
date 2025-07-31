@@ -17,6 +17,7 @@ const defaultInputs = {
   labelTrigger: "",
   anthropicModel: "claude-3-7-sonnet-20250219",
   allowedTools: [] as string[],
+  allowedActors: [] as string[],
   disallowedTools: [] as string[],
   customInstructions: "",
   directPrompt: "",

@@ -29,6 +29,7 @@ describe("prepareMcpConfig", () => {
       assigneeTrigger: "",
       labelTrigger: "",
       allowedTools: [],
+      allowedActors: [],
       disallowedTools: [],
       customInstructions: "",
       directPrompt: "",

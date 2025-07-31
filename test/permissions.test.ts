@@ -65,6 +65,7 @@ describe("checkWritePermissions", () => {
       assigneeTrigger: "",
       labelTrigger: "",
       allowedTools: [],
+      allowedActors: [],
       disallowedTools: [],
       customInstructions: "",
       directPrompt: "",
@@ -165,5 +166,42 @@ describe("checkWritePermissions", () => {
       repo: "test-repo",
       username: "test-user",
     });
+  });
+
+  test("should bypass permission check for allowed actors", async () => {
+    const mockOctokit = createMockOctokit("none");
+    const context = createContext();
+    context.inputs.allowedActors = ["test-user", "another-user"];
+
+    const result = await checkWritePermissions(mockOctokit, context);
+
+    expect(result).toBe(true);
+    expect(coreInfoSpy).toHaveBeenCalledWith(
+      "Actor test-user is in the allowed actors list, bypassing repository permission check",
+    );
+  });
+
+  test("should handle case-insensitive allowed actors", async () => {
+    const mockOctokit = createMockOctokit("none");
+    const context = createContext();
+    context.actor = "Test-User";
+    context.inputs.allowedActors = ["test-user"];
+
+    const result = await checkWritePermissions(mockOctokit, context);
+
+    expect(result).toBe(true);
+  });
+
+  test("should check permissions when actor not in allowed list", async () => {
+    const mockOctokit = createMockOctokit("none");
+    const context = createContext();
+    context.inputs.allowedActors = ["different-user"];
+
+    const result = await checkWritePermissions(mockOctokit, context);
+
+    expect(result).toBe(false);
+    expect(coreInfoSpy).toHaveBeenCalledWith(
+      "Actor test-user not in allowed list, checking repository permissions",
+    );
   });
 });
