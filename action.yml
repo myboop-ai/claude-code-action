@@ -68,8 +68,9 @@ inputs:
     default: ""
   allowed_actors:
     description: |
-      Additional actors allowed to trigger the action regardless of repository permissions.
-      This bypasses the standard GitHub permission model - use with trusted actors only.
+      Additional actors allowed to trigger the action regardless of repository permissions or actor type.
+      This bypasses both the standard GitHub permission model and human actor checks - use with trusted actors only.
+      Allows bots and automated tools to trigger the action when explicitly allowed.
       Accepts comma-separated or newline-separated values.
     required: false
     default: ""
