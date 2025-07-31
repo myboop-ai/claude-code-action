@@ -195,7 +195,7 @@ jobs:
 | `claude_env`                   | Custom environment variables to pass to Claude Code execution (YAML format)                                            | No       | ""        |
 | `settings`                     | Claude Code settings as JSON string or path to settings JSON file                                                      | No       | ""        |
 | `additional_permissions`       | Additional permissions to enable. Currently supports 'actions: read' for viewing workflow results                      | No       | ""        |
-| `allowed_actors`               | Additional actors allowed to trigger the action regardless of repository permissions (comma-separated)                 | No       | ""        |
+| `allowed_actors`               | Additional actors allowed to trigger the action regardless of repository permissions (comma or newline-separated)      | No       | ""        |
 | `experimental_allowed_domains` | Restrict network access to these domains only (newline-separated).                                                     | No       | ""        |
 | `use_commit_signing`           | Enable commit signing using GitHub's commit signature verification. When false, Claude uses standard git commands      | No       | `false`   |
 

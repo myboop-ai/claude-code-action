@@ -70,7 +70,7 @@ inputs:
     description: |
       Additional actors allowed to trigger the action regardless of repository permissions.
       This bypasses the standard GitHub permission model - use with trusted actors only.
-      Format: comma-separated list (e.g. 'copilot-pull-request-reviewer,dependabot[bot]')
+      Accepts comma-separated or newline-separated values.
     required: false
     default: ""
   claude_env:
