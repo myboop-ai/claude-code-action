@@ -198,6 +198,7 @@ jobs:
 | `allowed_actors`               | Additional actors allowed to trigger the action regardless of repository permissions (comma or newline-separated)      | No       | ""        |
 | `experimental_allowed_domains` | Restrict network access to these domains only (newline-separated).                                                     | No       | ""        |
 | `use_commit_signing`           | Enable commit signing using GitHub's commit signature verification. When false, Claude uses standard git commands      | No       | `false`   |
+| `target_repository`            | Override the target repository (format: owner/repo). Used for cross-repository operations                              | No       | -         |
 
 \*Required when using direct Anthropic API (default and when not using Bedrock or Vertex)
 
@@ -606,6 +607,28 @@ You can use the `max_turns` parameter to limit the number of back-and-forth exch
 ```
 
 When the turn limit is reached, Claude will stop execution gracefully. Choose a value that gives Claude enough turns to complete typical tasks while preventing excessive usage.
+
+### Cross-Repository Operations
+
+The `target_repository` input allows the action to operate on repositories different from where the workflow is running. This is useful for:
+
+- Centralized workflow management across multiple repositories
+- Cross-repository code reviews and analysis
+- Multi-repository automation tasks
+
+```yaml
+- uses: anthropics/claude-code-action@beta
+  with:
+    anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+    target_repository: "octocat/hello-world"  # Format: owner/repo
+    # ... other inputs
+```
+
+**Important Notes**:
+- The GitHub token must have access to the target repository
+- The format must be exactly `owner/repo` (e.g., `octocat/hello-world`)
+- API calls and operations will target the specified repository
+- This is particularly useful when running workflows triggered by events in other repositories
 
 ### Custom Tools
 

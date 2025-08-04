@@ -82,6 +82,9 @@ inputs:
     description: "Claude Code settings as JSON string or path to settings JSON file"
     required: false
     default: ""
+  target_repository:
+    description: "Override the target repository (format: owner/repo). Used for cross-repository operations."
+    required: false
 
   # Auth configuration
   anthropic_api_key:
@@ -170,6 +173,7 @@ runs:
         ACTIONS_TOKEN: ${{ github.token }}
         ADDITIONAL_PERMISSIONS: ${{ inputs.additional_permissions }}
         USE_COMMIT_SIGNING: ${{ inputs.use_commit_signing }}
+        TARGET_REPOSITORY: ${{ inputs.target_repository }}
 
     - name: Install Base Action Dependencies
       if: steps.prepare.outputs.contains_trigger == 'true'

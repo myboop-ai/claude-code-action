@@ -114,11 +114,33 @@ export function parseGitHubContext(): GitHubContext {
   const commonFields = {
     runId: process.env.GITHUB_RUN_ID!,
     eventAction: context.payload.action,
-    repository: {
-      owner: context.repo.owner,
-      repo: context.repo.repo,
-      full_name: `${context.repo.owner}/${context.repo.repo}`,
-    },
+    repository: (() => {
+      // Check for repository override from input
+      const targetRepo = process.env.TARGET_REPOSITORY;
+      if (targetRepo) {
+        const parts = targetRepo.split('/');
+        if (parts.length === 2) {
+          const [owner, repo] = parts.map(part => part.trim());
+          if (owner && repo) {
+            console.log(`Using repository override: ${targetRepo}`);
+            return {
+              owner,
+              repo,
+              full_name: `${owner}/${repo}`,
+            };
+          }
+        }
+        throw new Error(
+          `Invalid TARGET_REPOSITORY format: "${targetRepo}". Expected "owner/repo" (e.g., "octocat/hello-world").`
+        );
+      }
+      // Default to context repository
+      return {
+        owner: context.repo.owner,
+        repo: context.repo.repo,
+        full_name: `${context.repo.owner}/${context.repo.repo}`,
+      };
+    })(),
     actor: context.actor,
     inputs: {
       mode: modeInput as ModeName,
