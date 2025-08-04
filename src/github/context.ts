@@ -117,14 +117,22 @@ export function parseGitHubContext(): GitHubContext {
     repository: (() => {
       // Check for repository override from input
       const targetRepo = process.env.TARGET_REPOSITORY;
-      if (targetRepo && targetRepo.includes('/')) {
-        const [owner, repo] = targetRepo.split('/');
-        console.log(`Using repository override: ${targetRepo}`);
-        return {
-          owner,
-          repo,
-          full_name: targetRepo,
-        };
+      if (targetRepo) {
+        const parts = targetRepo.split('/');
+        if (parts.length === 2) {
+          const [owner, repo] = parts.map(part => part.trim());
+          if (owner && repo) {
+            console.log(`Using repository override: ${targetRepo}`);
+            return {
+              owner,
+              repo,
+              full_name: `${owner}/${repo}`,
+            };
+          }
+        }
+        throw new Error(
+          `Invalid TARGET_REPOSITORY format: "${targetRepo}". Expected "owner/repo" (e.g., "octocat/hello-world").`
+        );
       }
       // Default to context repository
       return {
