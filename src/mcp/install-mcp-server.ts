@@ -74,9 +74,8 @@ export async function prepareMcpConfig(
 
     // Always include comment server for updating Claude comments
     baseMcpConfig.mcpServers.github_comment = {
-      command: "bun",
+      command: "tsx",
       args: [
-        "run",
         `${process.env.GITHUB_ACTION_PATH}/src/mcp/github-comment-server.ts`,
       ],
       env: {
@@ -92,9 +91,8 @@ export async function prepareMcpConfig(
     // Include file ops server when commit signing is enabled
     if (context.inputs.useCommitSigning) {
       baseMcpConfig.mcpServers.github_file_ops = {
-        command: "bun",
+        command: "tsx",
         args: [
-          "run",
           `${process.env.GITHUB_ACTION_PATH}/src/mcp/github-file-ops-server.ts`,
         ],
         env: {
@@ -131,9 +129,8 @@ export async function prepareMcpConfig(
         );
       }
       baseMcpConfig.mcpServers.github_ci = {
-        command: "bun",
+        command: "tsx",
         args: [
-          "run",
           `${process.env.GITHUB_ACTION_PATH}/src/mcp/github-actions-server.ts`,
         ],
         env: {

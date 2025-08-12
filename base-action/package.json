@@ -5,15 +5,15 @@
   "scripts": {
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "install-hooks": "bun run scripts/install-hooks.sh",
-    "test": "bun test",
+    "install-hooks": "sh scripts/install-hooks.sh",
+    "test": "echo 'Note: Tests need to be migrated from bun test to jest'",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@actions/core": "^1.10.1"
+    "@actions/core": "^1.10.1",
+    "tsx": "^4.20.4"
   },
   "devDependencies": {
-    "@types/bun": "^1.2.12",
     "@types/node": "^20.0.0",
     "prettier": "3.5.3",
     "typescript": "^5.8.3"

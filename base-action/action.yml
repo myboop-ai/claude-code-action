@@ -111,11 +111,11 @@ runs:
       shell: bash
       run: |
         cd ${GITHUB_ACTION_PATH}
-        bun install
+        npm install
 
     - name: Install Claude Code
       shell: bash
-      run: bun install -g @anthropic-ai/claude-code@1.0.64
+      run: npm install -g @anthropic-ai/claude-code@1.0.64
 
     - name: Run Claude Code Action
       shell: bash
@@ -126,7 +126,7 @@ runs:
           echo "Changing directory to CLAUDE_WORKING_DIR: $CLAUDE_WORKING_DIR"
           cd "$CLAUDE_WORKING_DIR"
         fi
-        bun run ${GITHUB_ACTION_PATH}/src/index.ts
+        tsx ${GITHUB_ACTION_PATH}/src/index.ts
       env:
         # Model configuration
         CLAUDE_CODE_ACTION: "1"
