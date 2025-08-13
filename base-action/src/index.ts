@@ -1,4 +1,4 @@
-#!/usr/bin/env bun
+#!/usr/bin/env node
 
 import * as core from "@actions/core";
 import { preparePrompt } from "./prepare-prompt";
@@ -35,6 +35,5 @@ async function run() {
   }
 }
 
-if (import.meta.main) {
-  run();
-}
+// Run immediately when executed as a script
+run();

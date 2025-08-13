@@ -1,4 +1,4 @@
-#!/usr/bin/env bun
+#!/usr/bin/env node
 
 /**
  * Prepare the Claude action by checking trigger conditions, verifying human actor,
@@ -66,6 +66,5 @@ async function run() {
   }
 }
 
-if (import.meta.main) {
-  run();
-}
+// Run immediately when executed as a script
+run();

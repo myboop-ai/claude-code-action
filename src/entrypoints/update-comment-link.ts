@@ -1,4 +1,4 @@
-#!/usr/bin/env bun
+#!/usr/bin/env node
 
 import { createOctokit } from "../github/api/client";
 import * as fs from "fs/promises";
