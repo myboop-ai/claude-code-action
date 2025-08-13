@@ -126,7 +126,7 @@ runs:
           echo "Changing directory to CLAUDE_WORKING_DIR: $CLAUDE_WORKING_DIR"
           cd "$CLAUDE_WORKING_DIR"
         fi
-        tsx ${GITHUB_ACTION_PATH}/src/index.ts
+        npx tsx ${GITHUB_ACTION_PATH}/src/index.ts
       env:
         # Model configuration
         CLAUDE_CODE_ACTION: "1"
