@@ -162,7 +162,7 @@ export async function runClaude(promptPath: string, options: ClaudeOptions) {
     pipeStream.destroy();
   });
 
-  const claudeProcess = spawn("claude", config.claudeArgs, {
+  const claudeProcess = spawn("npx", ["claude", ...config.claudeArgs], {
     stdio: ["pipe", "pipe", "inherit"],
     env: {
       ...process.env,

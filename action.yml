@@ -184,8 +184,10 @@ runs:
         npm install
         echo "Base-action dependencies installed"
         cd -
-        # Install Claude Code globally
-        npm install -g @anthropic-ai/claude-code@1.0.64
+        # Install Claude Code locally
+        cd ${GITHUB_ACTION_PATH}
+        npm install @anthropic-ai/claude-code@1.0.64
+        cd -
 
     - name: Setup Network Restrictions
       if: steps.prepare.outputs.contains_trigger == 'true' && inputs.experimental_allowed_domains != ''
