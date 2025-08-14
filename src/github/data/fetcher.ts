@@ -1,6 +1,6 @@
 import { execFileSync } from "child_process";
 import type { Octokits } from "../api/client";
-import { ISSUE_QUERY, PR_QUERY, USER_QUERY } from "../api/queries/github";
+import { ISSUE_QUERY, PR_QUERY } from "../api/queries/github";
 import type {
   GitHubComment,
   GitHubFile,
@@ -211,21 +211,15 @@ export async function fetchGitHubData({
   };
 }
 
-export type UserQueryResponse = {
-  user: {
-    name: string | null;
-  };
-};
-
 export async function fetchUserDisplayName(
   octokits: Octokits,
   login: string,
 ): Promise<string | null> {
   try {
-    const result = await octokits.graphql<UserQueryResponse>(USER_QUERY, {
-      login,
+    const result = await octokits.rest.users.getByUsername({
+      username: login,
     });
-    return result.user.name;
+    return result.data.name || null;
   } catch (error) {
     console.warn(`Failed to fetch user display name for ${login}:`, error);
     return null;
