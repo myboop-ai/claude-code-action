@@ -109,7 +109,7 @@ export function formatReviewComments(
 
           body = sanitizeContent(body);
 
-          return `  [Comment on ${comment.path}:${comment.line || "?"}]: ${body}`;
+          return `  [Comment ID:${comment.databaseId} on ${comment.path}:${comment.line || "?"}]: ${body}`;
         })
         .join("\n");
       if (comments) {

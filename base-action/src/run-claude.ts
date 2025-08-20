@@ -162,7 +162,10 @@ export async function runClaude(promptPath: string, options: ClaudeOptions) {
     pipeStream.destroy();
   });
 
-  const claudeProcess = spawn("claude", config.claudeArgs, {
+  // Use the claude command from the action's node_modules
+  const claudePath = `${process.env.GITHUB_ACTION_PATH}/node_modules/.bin/claude`;
+  console.log(`Running Claude from: ${claudePath}`);
+  const claudeProcess = spawn(claudePath, config.claudeArgs, {
     stdio: ["pipe", "pipe", "inherit"],
     env: {
       ...process.env,

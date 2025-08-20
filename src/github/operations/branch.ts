@@ -1,4 +1,4 @@
-#!/usr/bin/env bun
+#!/usr/bin/env node
 
 /**
  * Setup the appropriate branch based on the event type:
@@ -6,7 +6,7 @@
  * - For Issues: Create a new branch
  */
 
-import { $ } from "bun";
+import { execSync } from "child_process";
 import * as core from "@actions/core";
 import type { ParsedGitHubContext } from "../context";
 import type { GitHubPullRequest } from "../types";
@@ -54,8 +54,8 @@ export async function setupBranch(
       );
 
       // Execute git commands to checkout PR branch (dynamic depth based on PR size)
-      await $`git fetch origin --depth=${fetchDepth} ${branchName}`;
-      await $`git checkout ${branchName} --`;
+      execSync(`git fetch origin --depth=${fetchDepth} ${branchName}`, { encoding: 'utf8' });
+      execSync(`git checkout ${branchName} --`, { encoding: 'utf8' });
 
       console.log(`Successfully checked out PR branch for PR #${entityNumber}`);
 
@@ -118,8 +118,8 @@ export async function setupBranch(
 
       // Ensure we're on the source branch
       console.log(`Fetching and checking out source branch: ${sourceBranch}`);
-      await $`git fetch origin ${sourceBranch} --depth=1`;
-      await $`git checkout ${sourceBranch}`;
+      execSync(`git fetch origin ${sourceBranch} --depth=1`, { encoding: 'utf8' });
+      execSync(`git checkout ${sourceBranch}`, { encoding: 'utf8' });
 
       // Set outputs for GitHub Actions
       core.setOutput("CLAUDE_BRANCH", newBranch);
@@ -138,11 +138,11 @@ export async function setupBranch(
 
     // Fetch and checkout the source branch first to ensure we branch from the correct base
     console.log(`Fetching and checking out source branch: ${sourceBranch}`);
-    await $`git fetch origin ${sourceBranch} --depth=1`;
-    await $`git checkout ${sourceBranch}`;
+    execSync(`git fetch origin ${sourceBranch} --depth=1`, { encoding: 'utf8' });
+    execSync(`git checkout ${sourceBranch}`, { encoding: 'utf8' });
 
     // Create and checkout the new branch from the source branch
-    await $`git checkout -b ${newBranch}`;
+    execSync(`git checkout -b ${newBranch}`, { encoding: 'utf8' });
 
     console.log(
       `Successfully created and checked out local branch: ${newBranch}`,

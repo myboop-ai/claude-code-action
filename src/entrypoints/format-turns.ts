@@ -1,4 +1,4 @@
-#!/usr/bin/env bun
+#!/usr/bin/env node
 
 import { readFileSync, existsSync } from "fs";
 import { exit } from "process";
@@ -456,6 +456,5 @@ function main(): void {
   }
 }
 
-if (import.meta.main) {
-  main();
-}
+// Run immediately when executed as a script
+main();

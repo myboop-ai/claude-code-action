@@ -1,6 +1,6 @@
 import type { Octokits } from "../api/client";
 import { GITHUB_SERVER_URL } from "../api/config";
-import { $ } from "bun";
+import { execSync } from "child_process";
 
 export async function checkAndCommitOrDeleteBranch(
   octokit: Octokits,
@@ -57,23 +57,22 @@ export async function checkAndCommitOrDeleteBranch(
 
           // Check for uncommitted changes using git status
           try {
-            const gitStatus = await $`git status --porcelain`.quiet();
-            const hasUncommittedChanges =
-              gitStatus.stdout.toString().trim().length > 0;
+            const gitStatus = execSync(`git status --porcelain`, { encoding: 'utf8' });
+            const hasUncommittedChanges = gitStatus.trim().length > 0;
 
             if (hasUncommittedChanges) {
               console.log("Found uncommitted changes, committing them...");
 
               // Add all changes
-              await $`git add -A`;
+              execSync(`git add -A`, { encoding: 'utf8' });
 
               // Commit with a descriptive message
               const runId = process.env.GITHUB_RUN_ID || "unknown";
               const commitMessage = `Auto-commit: Save uncommitted changes from Claude\n\nRun ID: ${runId}`;
-              await $`git commit -m ${commitMessage}`;
+              execSync(`git commit -m "${commitMessage}"`, { encoding: 'utf8' });
 
               // Push the changes
-              await $`git push origin ${claudeBranch}`;
+              execSync(`git push origin ${claudeBranch}`, { encoding: 'utf8' });
 
               console.log(
                 "✅ Successfully committed and pushed uncommitted changes",

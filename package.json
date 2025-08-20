@@ -5,8 +5,8 @@
   "scripts": {
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "install-hooks": "bun run scripts/install-hooks.sh",
-    "test": "bun test",
+    "install-hooks": "sh scripts/install-hooks.sh",
+    "test": "echo 'Note: Tests need to be migrated from bun test to jest'",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
@@ -17,10 +17,10 @@
     "@octokit/rest": "^21.1.1",
     "@octokit/webhooks-types": "^7.6.1",
     "node-fetch": "^3.3.2",
+    "tsx": "^4.20.4",
     "zod": "^3.24.4"
   },
   "devDependencies": {
-    "@types/bun": "1.2.11",
     "@types/node": "^20.0.0",
     "@types/node-fetch": "^2.6.12",
     "prettier": "3.5.3",

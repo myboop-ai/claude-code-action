@@ -137,22 +137,18 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - name: Install Bun
-      uses: oven-sh/setup-bun@735343b667d3e6f658f44d0eca948eb6282f2b76 # https://github.com/oven-sh/setup-bun/releases/tag/v2.0.2
-      with:
-        bun-version: 1.2.11
 
     - name: Install Dependencies
       shell: bash
       run: |
         cd ${GITHUB_ACTION_PATH}
-        bun install
+        npm install
 
     - name: Prepare action
       id: prepare
       shell: bash
       run: |
-        bun run ${GITHUB_ACTION_PATH}/src/entrypoints/prepare.ts
+        npx tsx ${GITHUB_ACTION_PATH}/src/entrypoints/prepare.ts
       env:
         MODE: ${{ inputs.mode }}
         TRIGGER_PHRASE: ${{ inputs.trigger_phrase }}
@@ -181,11 +177,13 @@ runs:
       run: |
         echo "Installing base-action dependencies..."
         cd ${GITHUB_ACTION_PATH}/base-action
-        bun install
+        npm install
         echo "Base-action dependencies installed"
         cd -
-        # Install Claude Code globally
-        bun install -g @anthropic-ai/claude-code@1.0.64
+        # Install Claude Code locally
+        cd ${GITHUB_ACTION_PATH}
+        npm install @anthropic-ai/claude-code@1.0.64
+        cd -
 
     - name: Setup Network Restrictions
       if: steps.prepare.outputs.contains_trigger == 'true' && inputs.experimental_allowed_domains != ''
@@ -203,7 +201,7 @@ runs:
       run: |
 
         # Run the base-action
-        bun run ${GITHUB_ACTION_PATH}/base-action/src/index.ts
+        npx tsx ${GITHUB_ACTION_PATH}/base-action/src/index.ts
       env:
         # Base-action inputs
         CLAUDE_CODE_ACTION: "1"
@@ -254,7 +252,7 @@ runs:
       if: steps.prepare.outputs.contains_trigger == 'true' && steps.prepare.outputs.claude_comment_id && always()
       shell: bash
       run: |
-        bun run ${GITHUB_ACTION_PATH}/src/entrypoints/update-comment-link.ts
+        npx tsx ${GITHUB_ACTION_PATH}/src/entrypoints/update-comment-link.ts
       env:
         REPOSITORY: ${{ github.repository }}
         PR_NUMBER: ${{ github.event.issue.number || github.event.pull_request.number }}
@@ -279,7 +277,7 @@ runs:
       shell: bash
       run: |
         # Try to format the turns, but if it fails, dump the raw JSON
-        if bun run ${{ github.action_path }}/src/entrypoints/format-turns.ts "${{ steps.claude-code.outputs.execution_file }}" >> $GITHUB_STEP_SUMMARY 2>/dev/null; then
+        if npx tsx ${{ github.action_path }}/src/entrypoints/format-turns.ts "${{ steps.claude-code.outputs.execution_file }}" >> $GITHUB_STEP_SUMMARY 2>/dev/null; then
           echo "Successfully formatted Claude Code report"
         else
           echo "## Claude Code Report (Raw Output)" >> $GITHUB_STEP_SUMMARY
